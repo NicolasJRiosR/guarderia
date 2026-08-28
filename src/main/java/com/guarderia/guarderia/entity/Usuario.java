@@ -9,6 +9,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,9 +47,20 @@ public class Usuario {
     @JoinColumn(name = "rol_id", nullable = false)
     private Rol rol;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+   @Column(name = "created_at", nullable = false)
+private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+@Column(name = "updated_at", nullable = false)
+private LocalDateTime updatedAt;
+
+@PrePersist
+protected void onCreate() {
+    createdAt = LocalDateTime.now();
+    updatedAt = LocalDateTime.now();
+}
+
+@PreUpdate
+protected void onUpdate() {
+    updatedAt = LocalDateTime.now();
+}
 }
